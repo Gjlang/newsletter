@@ -9,6 +9,7 @@
                     <h4 class="mb-0">Subscribe to Newsletter</h4>
                 </div>
                 <div class="card-body">
+
                     {{-- Flash Success Message --}}
                     @if(session('success'))
                         <div class="alert alert-success alert-dismissible fade show" role="alert">
@@ -29,25 +30,23 @@
                         </div>
                     @endif
 
-                    {{-- Subscribe Form --}}
-                    <form action="{{ route('marketing.subscribe') }}" method="POST">
+                    <form method="POST" action="{{ route('marketing.subscribe') }}" novalidate>
                         @csrf
 
                         <div class="mb-3">
-                            <label for="email" class="form-label">Email Address</label>
+                            <label for="email" class="form-label">Email address</label>
                             <input
                                 type="email"
                                 class="form-control @error('email') is-invalid @enderror"
                                 id="email"
                                 name="email"
                                 value="{{ old('email') }}"
-                                placeholder="Enter your email"
+                                placeholder="you@example.com"
                                 required
+                                autocomplete="email"
                             >
                             @error('email')
-                                <div class="invalid-feedback">
-                                    {{ $message }}
-                                </div>
+                                <div class="invalid-feedback">{{ $message }}</div>
                             @enderror
                         </div>
 
@@ -57,6 +56,7 @@
                             </button>
                         </div>
                     </form>
+
                 </div>
             </div>
         </div>
