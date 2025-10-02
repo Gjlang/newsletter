@@ -10,29 +10,28 @@ use Illuminate\Support\Facades\Mail;
 
 class SubscribeController extends Controller
 {
+    public function create()
+    {
+        return view('marketing.subscribe');
+    }
+
     public function store(Request $request)
     {
-        // Validate: required, email format, unique in subscribers
         $data = $request->validate([
-            'email' => ['required', 'email:rfc,dns', 'unique:subscribers,email'],
+            'email' => 'required|email:rfc,dns|unique:subscribers,email',
         ]);
 
-        // Create record with basic meta
         $subscriber = Subscriber::create([
-            'email'        => $data['email'],
-            'status'       => 'subscribed',
-            'subscribed_at'=> now(),
-            'ip'           => $request->ip(),
-            'user_agent'   => (string) $request->userAgent(),
+            'email' => $data['email'],
+            'status' => 'subscribed',
+            'subscribed_at' => now(),
+            'ip' => $request->ip(),
+            'user_agent' => $request->userAgent(),
         ]);
 
+        // send welcome mail
+        Mail::to($subscriber->email)->send(new WelcomeSubscriberMail(route('home')));
 
-        // Queue welcome email
-        Mail::to($subscriber->email)->queue(new WelcomeSubscriberMail());
-
-        // Flash success and redirect to form
-        return redirect()
-            ->route('marketing.subscribe.form')
-            ->with('success', 'Thanks! We emailed your welcome guide.');
+        return back()->with('success', 'Thanks! Please check your email.');
     }
 }

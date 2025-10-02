@@ -1,12 +1,14 @@
-<x-mail::message>
-# Introduction
+@component('mail::message')
+# Welcome to KL The Guide!
 
-The body of your message.
+Thanks for subscribing. We’ll send the best of KL—events, eats, and hidden gems—right to your inbox.
 
-<x-mail::button :url="''">
-Button Text
-</x-mail::button>
+@component('mail::button', ['url' => $url ?? '#'])
+Browse Latest Posts
+@endcomponent
+
+If this wasn’t you, you can ignore this email.
 
 Thanks,<br>
-{{ config('app.name') }}
-</x-mail::message>
+KL The Guide Team
+@endcomponent

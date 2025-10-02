@@ -3,32 +3,23 @@
 namespace App\Mail;
 
 use Illuminate\Bus\Queueable;
-use Illuminate\Contracts\Queue\ShouldQueue;
 use Illuminate\Mail\Mailable;
-use Illuminate\Mail\Mailables\Content;
-use Illuminate\Mail\Mailables\Envelope;
 use Illuminate\Queue\SerializesModels;
 
-class WelcomeSubscriberMail extends Mailable implements ShouldQueue
+class WelcomeSubscriberMail extends Mailable
 {
     use Queueable, SerializesModels;
 
-    public function envelope(): Envelope
+    public string $url;
+
+    public function __construct(string $url = '#')
     {
-        return new Envelope(
-            subject: 'Welcome to KL The Guide!',
-        );
+        $this->url = $url;
     }
 
-    public function content(): Content
+    public function build()
     {
-        return new Content(
-            markdown: 'emails.welcome',
-        );
-    }
-
-    public function attachments(): array
-    {
-        return [];
+        return $this->subject('Welcome to KL The Guide!')
+            ->markdown('emails.welcome', ['url' => $this->url]);
     }
 }
