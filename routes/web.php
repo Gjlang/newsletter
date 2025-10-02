@@ -6,9 +6,9 @@ use App\Mail\KlNewsletter;
 
 Route::get('/', fn() => view('marketing.subscribe'))->name('home');
 
-Route::prefix('subscribe')->name('subscribe.')->group(function () {
-    Route::get('/', [SubscribeController::class, 'create'])->name('create');
-    Route::post('/', [SubscribeController::class, 'store'])->name('store');
+Route::prefix('subscribe')->name('marketing.subscribe')->group(function () {
+    Route::get('/', [SubscribeController::class, 'create'])->name('');
+    Route::post('/', [SubscribeController::class, 'store'])->name('.store');
 });
 
 // test route to preview KL promo email in browser (optional)
